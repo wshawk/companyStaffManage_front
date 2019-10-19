@@ -9,8 +9,8 @@
   </div>
 </template>
 
-<style>
-#app {
+<style >
+/* #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -29,5 +29,14 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+} */
+html,body,#app{
+
+ /* height: 100%; */
+
+}
+*{
+margin: 0 auto;
+padding:0%
 }
 </style>

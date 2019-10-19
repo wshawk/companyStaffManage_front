@@ -1,13 +1,12 @@
 <template>
-  <div class="login_div">
-    <form>
-      用户名:
-      <input name="userName" type="text" v-model="username">
-      <br>
-      密 码:
-      <input name="password" type="password" v-model="password">
-      <br>
-      <input type="button" value="登录" @click="send">
+
+    <div class="login_div">
+      <!-- <p>物流公司员工管理系统</p> -->
+    <form class="login_form">
+      用户名 <el-input name="userName" placeholder="请输入用户名" v-model="username" clearable> </el-input><br><br>
+      密 码   <el-input name="password" show-password v-model="password"> </el-input>
+      <br><br><br>
+      <el-button type="success" @click="send">登录</el-button>
     </form>
   </div>
 
@@ -22,24 +21,38 @@ export default {
     }
   },
   created(){
-    this.test()
   },
   methods: {
+
     send() {
-      this.axios({
-        method: "get",
-        url: "/api/login",
-        params: {
+       let that = this
+       that.password = this.$md5(this.$md5(this.password))
+       let params = {
           userName:this.username,
-          password:this.password
+          password:that.password
         }
-      }).then(function(res) {
-        debugger
-        if(res.data){
-          alert("登录成功")
-        }
-        alert("登录失败")
-      });
+      
+      this.axios({
+        method: "post",
+        url: "/api/login",
+        dataType:'json',
+        contentType:"application/json charset=utf-8",
+        data:params
+      }).then((response) => {
+       if(response.data){
+         localStorage.setItem("islogin", 1); // 指定登录状态
+         this.$router.push({
+           name:'index',
+           params:{
+             userName:this.username
+           }
+         })
+       }else{
+         alert("登录失败")
+       }
+      }).catch(function (response) {
+          console.error(response);
+      }); 
     }
     
   }
@@ -47,15 +60,20 @@ export default {
 </script>
 
 <style scoped>
-*{
-margin: 0;
-padding:0%
-}
+
 .login_div{
 text-align: center;
-width: 100%;
+width: 600px;
 height: 100%;
 background-color: aquamarine
+}
+.login_form{
+  margin: 10px 20px;
+  padding:50% 0px;
+  text-align: center;
+}
+.el-input{
+  width: 200px
 }
 </style>
 
