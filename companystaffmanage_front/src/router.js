@@ -11,7 +11,8 @@ let router = new Router({
   routes: [
     {
       path: '/',
-      namw:'home',
+      name:'home',
+      redirect:'/index',
       meta: { // 在路由配置中加入meta:{requireAuth: true}
       requireAuth: true
      },
@@ -36,8 +37,16 @@ let router = new Router({
       meta: { // 在路由配置中加入meta:{requireAuth: true}
       requireAuth: true
      },
+     children:[{
+      path:'/userInfo',
+      name:'userInfo',
+      meta: { // 在路由配置中加入meta:{requireAuth: true}
+      requireAuth: true
+     },
+      component: () => import('./components/userInfo/userInfo.vue')
+    }],
       component: () => import('./components/index/index.vue')
-    }
+    },
   ]
 });
 export default router;
