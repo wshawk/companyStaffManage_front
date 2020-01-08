@@ -1,7 +1,7 @@
 <template>
 
-    <div class="login_div">
-      <!-- <p>物流公司员工管理系统</p> -->
+    <!-- <div class="login_div">
+      
     <div style="width:300px">
     <el-form size="small" class="login_form" label-position="right" label-width="80px" :rules="rules" ref="ruleForm"> 
       <el-form-item label="用户名：" prop="userName">
@@ -14,8 +14,24 @@
       <el-button type="success" @click="send">登录</el-button>
     </el-form>
     </div>
+  </div> -->
+<div style="background-color: aquamarine;width:700px;height:600px;margin-top:200px">
+  <div style="width:500px;padding-top:200px;text-align:center">
+<el-form style="width:300px" :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
+  <el-form-item label="用户名">
+    <el-input v-model="userName" placeholder="请输入用户名"></el-input>
+  </el-form-item>
+  <el-form-item label="密码">
+    <el-input v-model="password" placeholder="请输入密码" show-password></el-input>
+  </el-form-item>
+  <el-form-item>
+    <el-button type="success" @click="send">
+      <label>登录</label>
+    </el-button>
+  </el-form-item>
+</el-form>
   </div>
-
+</div>
 </template>
 <script>
 export default {
@@ -32,7 +48,13 @@ export default {
            { required: true, message: '请输入活动名称', trigger: 'blur' },
            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
         ]
-      }
+      },
+       labelPosition: 'right',
+        formLabelAlign: {
+          name: '',
+          region: '',
+          type: ''
+        }
     }
   },
   created(){
