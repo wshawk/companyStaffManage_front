@@ -3,8 +3,8 @@
     <div class="login_div">
       <!-- <p>物流公司员工管理系统</p> -->
     <form class="login_form">
-      用户名 <el-input name="userName" placeholder="请输入用户名" v-model="username" clearable> </el-input><br><br>
-      密 码   <el-input name="password" show-password v-model="password"> </el-input>
+      用户名: <el-input name="userName" placeholder="请输入用户名" v-model="username" clearable> </el-input><br/><br/>
+      密 码: <el-input style="margin-left:10px" name="password" placeholder="请输入密码" show-password v-model="password"> </el-input>
       <br><br><br>
       <el-button type="success" @click="send">登录</el-button>
     </form>
