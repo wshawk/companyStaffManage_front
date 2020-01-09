@@ -1,116 +1,91 @@
 <template>
-
-    <!-- <div class="login_div">
-      
-    <div style="width:300px">
-    <el-form size="small" class="login_form" label-position="right" label-width="80px" :rules="rules" ref="ruleForm"> 
-      <el-form-item label="用户名：" prop="userName">
-      <el-input name="userName" placeholder="请输入用户名" v-model="username" clearable> </el-input>
+  <div> 
+    
+    <el-form :model="loginForm" :rules="rules" ref="loginForm" label-width="80px" class="login-form">
+      <p style="margin-bottom:1vw"><strong>员工管理系统</strong></p>
+      <el-form-item label="用户名" prop="username">
+        <el-input v-model="loginForm.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
-      <el-form-item label="密码：">
-      <el-input  name="password" placeholder="请输入密码" show-password v-model="password"> </el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input v-model="loginForm.password" show-password placeholder="请输入密码"></el-input>
       </el-form-item>
-      
-      <el-button type="success" @click="send">登录</el-button>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
+        <el-button @click="resetForm('loginForm')">重置</el-button>
+      </el-form-item>
     </el-form>
-    </div>
-  </div> -->
-<div style="background-color: aquamarine;width:700px;height:600px;margin-top:200px">
-  <div style="width:500px;padding-top:200px;text-align:center">
-<el-form style="width:300px" :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-  <el-form-item label="用户名">
-    <el-input v-model="userName" placeholder="请输入用户名"></el-input>
-  </el-form-item>
-  <el-form-item label="密码">
-    <el-input v-model="password" placeholder="请输入密码" show-password></el-input>
-  </el-form-item>
-  <el-form-item>
-    <el-button type="success" @click="send">
-      <label>登录</label>
-    </el-button>
-  </el-form-item>
-</el-form>
   </div>
-</div>
 </template>
+
 <script>
 export default {
   name: "Login",
   data() {
     return {
-      username:'',
-      password:'',
-      ruleForm:{
-        userName:''
+      loginForm: {
+        username: "",
+        password: ""
       },
-      rules:{
-        userName:[
-           { required: true, message: '请输入活动名称', trigger: 'blur' },
-           { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ]
-      },
-       labelPosition: 'right',
-        formLabelAlign: {
-          name: '',
-          region: '',
-          type: ''
-        }
-    }
-  },
-  created(){
+      rules: {
+        username: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          { min: 5, max: 16, message: "长度在 5 到 16 个字符", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 6, max: 16, message: "长度在 6 到 16 个字符", trigger: "blur" }
+          ]
+      }
+    };
   },
   methods: {
-
-    send() {
-       let that = this
-       that.password = this.$md5(this.$md5(this.password))
-       let params = {
-          userName:this.username,
-          password:that.password
+    submitForm(formName) {
+      let that = this;
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          that.loginForm.password = this.$md5(this.$md5(this.loginForm.password));
+          let params = {
+            userName: that.loginForm.username,
+            password: that.loginForm.password
+          };
+          this.axios({
+            method: "post",
+            url: "/api/login",
+            dataType: "json",
+            contentType: "application/json charset=utf-8",
+            data: params
+          })
+            .then(response => {
+              if (response.data) {
+                localStorage.setItem("islogin", 1); // 指定登录状态
+                this.$router.push({
+                  name: "index",
+                  params: {
+                    userName: this.username
+                  }
+                });
+              } else {
+                alert("登录失败");
+              }
+            })
+            .catch(function(response) {
+              console.error(response);
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
         }
-      
-      this.axios({
-        method: "post",
-        url: "/api/login",
-        dataType:'json',
-        contentType:"application/json charset=utf-8",
-        data:params
-      }).then((response) => {
-       if(response.data){
-         localStorage.setItem("islogin", 1); // 指定登录状态
-         this.$router.push({
-           name:'index',
-           params:{
-             userName:this.username
-           }
-         })
-       }else{
-         alert("登录失败")
-       }
-      }).catch(function (response) {
-          console.error(response);
-      }); 
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     }
-    
   }
 };
 </script>
-
 <style scoped>
-
-.login_div{
-width: 600px;
-height: 450px;
-margin-top:100px;
-vertical-align:middle;
-background-color: aquamarine
+.login-form{
+  width: 20%;
+  margin-top: 10%;
 }
-.login_form{
-  margin: 10px 20px;
-  padding:50% 0px;
-  text-align: center;
-} 
 </style>
-
-
-
