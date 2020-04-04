@@ -18,6 +18,7 @@
       </el-submenu>
       <el-menu-item index="3"><router-link :to="{name:'userInfo'}" tag="li">个人信息</router-link></el-menu-item>
       <el-menu-item index="4">待我处理</el-menu-item>
+      <el-menu-item index="5" @click="exit">注销</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -32,7 +33,10 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      // console.log(key, keyPath);
+    },
+    exit(){
+      localStorage.setItem("islogin",0);
+      this.$router.push({name: "login"});
     }
   }
 };

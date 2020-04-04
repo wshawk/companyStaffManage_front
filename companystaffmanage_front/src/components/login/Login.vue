@@ -18,7 +18,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
-        <el-button @click="resetForm('loginForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -88,6 +87,16 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+  },
+  created(){
+    let that = this;
+    document.onkeypress = function(e) {
+      var keycode = document.all ? event.keyCode : e.which;
+      if (keycode == 13) {
+        that.submitForm('loginForm');// 登录方法名
+        return false;
+      }
+    };
   }
 };
 </script>
