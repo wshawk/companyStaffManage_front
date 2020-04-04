@@ -54,13 +54,8 @@ export default router;
 router.beforeEach((to, from, next) => {
   let islogin = localStorage.getItem("islogin");
   islogin = Boolean(Number(islogin));
-
   if(to.path == "/login"){
-    if(islogin){
-      next("/index");
-    }else{
       next();
-    }
   }else{
     // requireAuth:可以在路由元信息指定哪些页面需要登录权限
     if(to.meta.requireAuth && islogin) {
